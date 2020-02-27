@@ -59,5 +59,43 @@ class Red:
 # FORM HERE YUO CAN SCRAP THE DESCRIPTION, SPECIFICATIONS OF JOB BY USING THE LINKS RETURNED BY THE 'Red' class
 
 # NEXT STEP: built similar class for all the links above
-# NEXT STEP: use the links returned to applay automatically to all jobs.
 
+
+class Monster:
+    """Get the job titles from red.co.uk"""
+    def query_constructor(job: str, where: str) -> str:
+        # query constroctor
+        base = 'https://www.monster.co.uk/jobs/search/?q='
+        midle = f'{job.replace(" ", "-")}&where={where.lower()}'
+        end = '&client=power&cy=uk&rad=20&intcid=swoop_Hero_Search'
+        query = base + midle + end
+        return query
+
+    def get_requests(url: str) -> requests.Response:
+        """Gets a url and returns a response"""
+        return requests.get(url)
+
+    def scrap_title(response: requests.Response) -> dict:
+        """Scrap the title, links from h3 bs elements"""
+        job_links = {}
+
+        # scrap
+        bs_object = bs(response.content, 'html.parser')
+        job_title = bs_object.find_all('h2', {'class': 'title'})
+
+        # get the links and titles
+        for item in job_title:
+            try:
+                job_links[item.text] = item.a['href']
+            except TypeError:
+                pass
+
+        # return dict[tile: link]
+        return job_links
+
+    def get_jobs(title: str, location: str) -> dict:
+        """CONSTRUCTUR PATTERN"""
+        query = Monster.query_constructor(title, location)
+        response = Monster.get_requests(query)
+        jobs = Monster.scrap_title(response)
+        return jobs
