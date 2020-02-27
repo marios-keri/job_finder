@@ -56,10 +56,6 @@ class Red:
         jobs = Red.scrap_h3(response)
         return jobs
 
-# FORM HERE YUO CAN SCRAP THE DESCRIPTION, SPECIFICATIONS OF JOB BY USING THE LINKS RETURNED BY THE 'Red' class
-
-# NEXT STEP: built similar class for all the links above
-
 
 class Monster:
     """Get the job titles from red.co.uk"""
@@ -99,3 +95,8 @@ class Monster:
         response = Monster.get_requests(query)
         jobs = Monster.scrap_title(response)
         return jobs
+
+      
+# FORM HERE YUO CAN SCRAP THE DESCRIPTION, SPECIFICATIONS OF JOB BY USING THE LINKS RETURNED BY THE 'Red' class
+
+# NEXT STEP: built similar class for all the links above
