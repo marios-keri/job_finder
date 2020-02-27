@@ -1,2 +1,3 @@
 # job_finder
-get job titles from various sources
+  step: 1 get job titles and they links from various sources \
+  step: 2 apply to those jobs using the link gatherd 
