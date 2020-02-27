@@ -1,3 +1,9 @@
+"""The idea is to get the tiles of the jobs form various sources and applay to all of thoses sources at onec"""
+
+import requests
+from bs4 import BeautifulSoup as bs
+
+
 job_portal_list = {'https://www.reed.co.uk/'
                   ,'https://www.monster.co.uk/'
                   ,'https://www.jobsite.co.uk/'
@@ -9,12 +15,8 @@ job_portal_list = {'https://www.reed.co.uk/'
                   ,'https://www.adzuna.co.uk/'
                   ,'https://www.careerbuilder.co.uk/'}
 
-import requests
-from bs4 import BeautifulSoup as bs
-
-
 class Red:
-
+"""Get the job titles from red.co.uk"""
     def query_constructor(job: str, where: str) -> str:
         """query constructor"""
         base = 'https://www.reed.co.uk/jobs/'
