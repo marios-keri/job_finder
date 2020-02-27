@@ -15,8 +15,10 @@ job_portal_list = {'https://www.reed.co.uk/'
                   ,'https://www.adzuna.co.uk/'
                   ,'https://www.careerbuilder.co.uk/'}
 
+
 class Red:
-"""Get the job titles from red.co.uk"""
+    """Get the job titles from red.co.uk"""
+
     def query_constructor(job: str, where: str) -> str:
         """query constructor"""
         base = 'https://www.reed.co.uk/jobs/'
@@ -37,7 +39,6 @@ class Red:
         bs_object = bs(response.content, 'html.parser')
         h3 = bs_object.find_all('h3')
 
-        print(type(h3))
         # get the links and titles
         for item in h3:
             try:
@@ -48,11 +49,15 @@ class Red:
         # return dict[tile: link]
         return job_links
 
-    # CONSTRUCTUR PATTERN
     def get_jobs(title: str, location: str) -> dict:
+        """CONSTRUCTUR PATTERN"""
         query = Red.query_constructor(title, location)
         response = Red.get_requests(query)
         jobs = Red.scrap_h3(response)
         return jobs
 
+# FORM HERE YUO CAN SCRAP THE DESCRIPTION, SPECIFICATIONS OF JOB BY USING THE LINKS RETURNED BY THE 'Red' class
+
+# NEXT STEP: built similar class for all the links above
+# NEXT STEP: use the links returned to applay automatically to all jobs.
 
