@@ -3,6 +3,8 @@
 import requests
 from bs4 import BeautifulSoup as bs
 
+__author__ = 'Marios Keri'
+__date__ = '27-02-2020'
 
 job_portal_list = {'https://www.reed.co.uk/'
                   ,'https://www.monster.co.uk/'
@@ -21,11 +23,8 @@ class Red:
 
     def query_constructor(job: str, where: str) -> str:
         """query constructor"""
-        base = 'https://www.reed.co.uk/jobs/'
-        title = f'{job.replace(" ", "-").lower()}'
-        cyti = f'-in-{where.lower()}'
-        query = base + title + cyti
-        return query
+        base = f'https://www.reed.co.uk/jobs/{job.replace(" ", "-").lower()}-in-{where.lower()}'
+        return base
 
     def get_requests(url: str) -> requests.Response:
         """Gets a url and returns a response"""
@@ -55,6 +54,11 @@ class Red:
         response = Red.get_requests(query)
         jobs = Red.scrap_h3(response)
         return jobs
+
+
+jobs = Red.get_jobs('python developer', 'manchester')
+print(jobs)
+
 
 
 class Monster:
@@ -100,3 +104,4 @@ class Monster:
 # FORM HERE YUO CAN SCRAP THE DESCRIPTION, SPECIFICATIONS OF JOB BY USING THE LINKS RETURNED BY THE 'Red' class
 
 # NEXT STEP: built similar class for all the links above
+
