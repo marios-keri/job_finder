@@ -2,24 +2,36 @@
 
 import requests
 from bs4 import BeautifulSoup as bs
+from selenium import webdriver
 
 __author__ = 'Marios Keri'
 __date__ = '27-02-2020'
 
 
-class Reed:
+class Portal():
+    def __init__(self, job: str, where: str):
+        self.job_portal_list = {'reed': f'https://www.reed.co.uk/jobs/{job.replace(" ", "-").lower()}-in-{where.lower()}'
+                                ,'monster': f'https://www.monster.co.uk/jobs/search/?q={job.replace(" ", "-").lower()}'
+                                            f'&where={where.lower()}&client=power&cy=uk&rad=20&intcid=swoop_Hero_Search'
+                                ,'indeed': f'https://www.indeed.co.uk/jobs?q={job.replace(" ", "+").lower()}&l={where.lower()}+'
+                                ,'torvit': f'https://jobs.trovit.co.uk/index.php/cod.search_jobs/what_d.{job.replace(" ", "%20").lower()}'
+                                           f'/where_d.{where.lower()}sug.0/isUserSearch.1'
+                                ,'adzuma': f'https://www.adzuna.co.uk/jobs/search?q={job.replace(" ", "%20").lower()}&w={where.lower()}'
+                                ,'careerbulder': f'https://www.careerbuilder.co.uk/jobsearch?utf8=%E2%9C%93&q={job.replace(" ", "%20").lower()}'
+                                                 f'&loc={where.lower()}'}
+
+
+class Reed(Portal):
     """Get the job titles from red.co.uk"""
+    def __init__(self, job, where):
+        super().__init__(job, where)
+        self.url = self.job_portal_list['reed']
 
-    def query_constructor(job: str, where: str) -> str:
-        """query constructor"""
-        base = f'https://www.reed.co.uk/jobs/{job.replace(" ", "-").lower()}-in-{where.lower()}'
-        return base
-
-    def get_requests(url: str) -> requests.Response:
+    def get_requests(self, url: str) -> requests.Response:
         """Gets a url and returns a response"""
         return requests.get(url)
 
-    def scrap_h3(response: requests.Response) -> dict:
+    def scrap_h3(self, response: requests.Response) -> dict:
         """Scrap the title, links from h3 bs elements"""
         job_links = {}
 
@@ -37,29 +49,24 @@ class Reed:
         # return dict[tile: link]
         return job_links
 
-    def get_jobs(title: str, location: str) -> dict:
+    def get_jobs(self) -> dict:
         """CONSTRUCTUR PATTERN"""
-        query = Reed.query_constructor(title, location)
-        response = Reed.get_requests(query)
-        jobs = Reed.scrap_h3(response)
+        response = self.get_requests(self.url)
+        jobs = self.scrap_h3(response)
         return jobs
 
 
-class Monster:
+class Monster(Portal):
     """Get the job titles from red.co.uk"""
-    def query_constructor(job: str, where: str) -> str:
-        # query constroctor
-        base = 'https://www.monster.co.uk/jobs/search/?q='
-        midle = f'{job.replace(" ", "-")}&where={where.lower()}'
-        end = '&client=power&cy=uk&rad=20&intcid=swoop_Hero_Search'
-        query = base + midle + end
-        return query
+    def __init__(self, job: str, where: str):
+        super().__init__(job, where)
+        self.url = self.job_portal_list['monster']
 
-    def get_requests(url: str) -> requests.Response:
+    def get_requests(self, url: str) -> requests.Response:
         """Gets a url and returns a response"""
         return requests.get(url)
 
-    def scrap_title(response: requests.Response) -> dict:
+    def scrap_title(self, response: requests.Response) -> dict:
         """Scrap the title, links from h3 bs elements"""
         job_links = {}
 
@@ -77,15 +84,13 @@ class Monster:
         # return dict[tile: link]
         return job_links
 
-    def get_jobs(title: str, location: str) -> dict:
+    def get_jobs(self) -> dict:
         """CONSTRUCTUR PATTERN"""
-        query = Monster.query_constructor(title, location)
-        response = Monster.get_requests(query)
-        jobs = Monster.scrap_title(response)
+        response = self.get_requests(self.url)
+        jobs = self.scrap_title(response)
         return jobs
 
       
 # FORM HERE YUO CAN SCRAP THE DESCRIPTION, SPECIFICATIONS OF JOB BY USING THE LINKS RETURNED BY THE 'Red' class
 
 # NEXT STEP: built similar class for all the links above
-
