@@ -6,19 +6,8 @@ from bs4 import BeautifulSoup as bs
 __author__ = 'Marios Keri'
 __date__ = '27-02-2020'
 
-job_portal_list = {'https://www.reed.co.uk/'
-                  ,'https://www.monster.co.uk/'
-                  ,'https://www.jobsite.co.uk/'
-                  ,'https://www.indeed.co.uk/'
-                  ,'http://jobs.telegraph.co.uk/'
-                  ,'https://www.agencycentral.co.uk/'
-                  ,'https://jobs.trovit.co.uk/'
-                  ,'https://www.cwjobs.co.uk/'
-                  ,'https://www.adzuna.co.uk/'
-                  ,'https://www.careerbuilder.co.uk/'}
 
-
-class Red:
+class Reed:
     """Get the job titles from red.co.uk"""
 
     def query_constructor(job: str, where: str) -> str:
@@ -50,15 +39,10 @@ class Red:
 
     def get_jobs(title: str, location: str) -> dict:
         """CONSTRUCTUR PATTERN"""
-        query = Red.query_constructor(title, location)
-        response = Red.get_requests(query)
-        jobs = Red.scrap_h3(response)
+        query = Reed.query_constructor(title, location)
+        response = Reed.get_requests(query)
+        jobs = Reed.scrap_h3(response)
         return jobs
-
-
-jobs = Red.get_jobs('python developer', 'manchester')
-print(jobs)
-
 
 
 class Monster:
