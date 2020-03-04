@@ -21,7 +21,6 @@ class ScrapPortal():
                                                  f'&loc={where.lower()}'}
 
     def get_requests(self, key):
-        print(key)
         if key not in self.job_portal_list.keys():
             exit(f'Valid key names are {self.job_portal_list.keys()}')
         return requests.get(self.job_portal_list[key])
